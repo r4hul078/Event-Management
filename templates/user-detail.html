@@ -1,0 +1,87 @@
+{% extends 'navDrawer.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Details</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Profile</h1>
+        <div class="user-card">
+            <div class="profile-pic-container">
+                <img id="profile-pic" src="{{ url_for('static', filename='uploads/' + user[3]) }}" alt="Profile Picture">
+            </div>
+            <p><strong>Name:</strong> {{ user[1] }}</p>
+            <p><strong>Email:</strong> {{ user[2] }}</p>
+            <button onclick="openEditModal()" class="edit-btn">Edit Details</button>
+        </div>
+    </div>
+    
+
+    <!-- Edit User Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditModal()">&times;</span>
+            <h2>Edit User Details</h2>
+            <form id="editForm">
+                <label for="editName">Name</label>
+                <input type="text" id="editName" name="editName" value="{{ user[1] }}" required>
+                
+                <label for="editEmail">Email</label>
+                <input type="email" id="editEmail" name="editEmail" value="{{ user[2] }}" required>
+
+                <p id="message" style="color: red;"></p>
+                
+                <button type="submit" class="save-btn">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function openEditModal() {
+            document.getElementById('editModal').style.display = 'block';
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('editForm').addEventListener('submit', function (event) {
+                event.preventDefault();
+
+                let name = document.getElementById('editName').value.trim();
+                let email = document.getElementById('editEmail').value.trim();
+                let message = document.getElementById('message');
+
+                if (!name || !email) {
+                    message.innerText = "Both fields are required!";
+                    return;
+                }
+
+                fetch('/update-user', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        window.location.reload(); // Reload page to reflect changes
+                    } else {
+                        message.innerText = data.error;
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
+{% endblock %}

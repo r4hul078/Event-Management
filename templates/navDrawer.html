@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/static/CSS/dashboard.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2>Menu</h2>
+            
+        </div>
+        <ul>
+            <li><a href="dashboard" {% if page == 'dashboard' %}class="active"{% endif %}><i class="fas fa-home"></i> Dashboard</a></li>
+            <li><a href="#" {% if page == 'event-booking' %}class="active"{% endif %}><i class="fas fa-calendar-check"></i> Event Booking</a></li>
+            <li><a href="user-detail" {% if page == 'user-detail' %}class="active"{% endif %}><i class="fas fa-user"></i> User Details</a></li>
+            <li><a href="#" {% if page == 'bill-payment' %}class="active"{% endif %}><i class="fas fa-file-invoice"></i> Bill and Payment</a></li>
+        </ul>
+    </div>
+
+    <!-- Content -->
+    <div class="main-content">
+        <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+        {% block content %} 
+        <!-- Page-specific content will go here -->
+        {% endblock %}
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            console.log("apple");
+            
+            let sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('active');
+        }
+    </script>
+</body>
+
+</html>
