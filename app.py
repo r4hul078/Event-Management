@@ -24,6 +24,8 @@ def init_db():
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL,
                 email TEXT UNIQUE NOT NULL,
+                address TEXT UNIQUE NOT NULL,
+                phone INTEGER,
                 password TEXT NOT NULL,
                 profile_picture TEXT
             )
@@ -94,6 +96,10 @@ def register():
     password = request.form.get('password')
     confirm_password = request.form.get('confirm_password')
     profile_picture = request.files['profile_picture']
+    address = request.form.get('address')
+    phone = request.form.get('phone')
+
+
 
     if not name or not email or not password or not confirm_password:
         return jsonify({'error': 'All fields are required'}), 400
@@ -114,8 +120,8 @@ def register():
         conn.close()
         return jsonify({'error': 'Email already registered'}), 400
 
-    cursor.execute('INSERT INTO users (name, email, password, profile_picture) VALUES (?, ?, ?, ?)', 
-                   (name, email, password, filename))
+    cursor.execute('INSERT INTO users (name, email, password, profile_picture, address, phone) VALUES (?, ?, ?, ?, ?, ?)', 
+                   (name, email, password, filename, address, phone))
     conn.commit()
     user_id = cursor.lastrowid
     conn.close()
@@ -138,7 +144,7 @@ def userDetail():
     cursor = conn.cursor()
     
     # Fetch only the logged-in user's details
-    cursor.execute('SELECT id, name ,email, profile_picture FROM users WHERE id = ?', (session['user_id'],))
+    cursor.execute('SELECT id, name ,email, profile_picture, address, phone FROM users WHERE id = ?', (session['user_id'],))
     user = cursor.fetchone()
     
     conn.close()
