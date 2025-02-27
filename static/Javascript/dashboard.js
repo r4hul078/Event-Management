@@ -158,21 +158,21 @@ function searchEvents() {
 }
 
 // This function gets user details
-function loadUserDetails() {
-    let request = new XMLHttpRequest();
-    request.open("GET", "/user-details");
-    request.onreadystatechange = function() {
-        if (request.readyState === 4 && request.status === 200) { // Success
-            let data = JSON.parse(request.responseText);
-            console.log("User:", data); // See what we got
-            let userArea = document.getElementById("user-details");
-            userArea.innerHTML = "<li>Email: " + data.email + "</li>";
-        } else if (request.readyState === 4) { // Error
-            console.log("Error loading user details:", request.status);
-        }
-    };
-    request.send();
-}
+// function loadUserDetails() {
+//     let request = new XMLHttpRequest();
+//     request.open("GET", "/user-details");
+//     request.onreadystatechange = function() {
+//         if (request.readyState === 4 && request.status === 200) { // Success
+//             let data = JSON.parse(request.responseText);
+//             console.log("User:", data); // See what we got
+//             let userArea = document.getElementById("user-details");
+//             userArea.innerHTML = "<li>Email: " + data.email + "</li>";
+//         } else if (request.readyState === 4) { // Error
+//             console.log("Error loading user details:", request.status);
+//         }
+//     };
+//     request.send();
+// }
 
 // This function logs the user out
 function logout() {
@@ -198,7 +198,7 @@ function logout() {
 window.onload = function() {
     console.log("Page is ready!"); // Let us know it started
     loadEvents();
-    loadUserDetails();
+    // loadUserDetails();
 
     // Handle the booking form
     let form = document.getElementById("booking-form");

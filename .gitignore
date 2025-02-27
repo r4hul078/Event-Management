@@ -1,0 +1,29 @@
+# Ignore virtual environments
+.venv/
+venv/
+
+# Ignore uploaded files (profile pictures, etc.)
+static/uploads/
+
+# Ignore SQLite database file
+users.db
+*.sqlite3
+
+# Ignore environment variables
+.env
+
+# Ignore __pycache__ and compiled Python files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore IDE/editor files (optional)
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Ignore logs (if applicable)
+*.log
+logs/
