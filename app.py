@@ -12,8 +12,6 @@ def setup_database():
     cursor.execute("DROP TABLE IF EXISTS events")  # Start fresh
     cursor.execute("CREATE TABLE IF NOT EXISTS events (id INTEGER PRIMARY KEY, user_id INTEGER, event_name TEXT, event_date TEXT, venue TEXT, description TEXT, address TEXT, phone_number TEXT, paid INTEGER DEFAULT 0)")
     conn.commit()
-    # No test user or event inserted
-    print("Database is ready with empty tables!")
     conn.close()
 
 setup_database()
@@ -156,7 +154,7 @@ def pay_event(event_id):
     conn.close()
     return jsonify({"success": True})
 
-# Log the user out
+# Log out
 @app.route("/logout", methods=["POST"])
 def logout():
     session.pop("user_id", None)
