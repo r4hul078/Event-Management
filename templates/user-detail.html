@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Simple Dashboard</title>
+    <link rel="stylesheet" href="/static/CSS/dashboard.css">
+    <script src="/static/Javascript/dashboard.js"></script> <!-- Load JS at the end -->
+    <style>
+        /* Main Content */
+        .main-content {
+            margin-left: 270px;
+            padding: 20px;
+        }
+
+        /* Profile Card */
+        .user-card {
+            display: flex;
+            align-items: center;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .profile-pic-container {
+            margin-right: 20px;
+        }
+
+        .profile-pic {
+            width: 120px !important;
+            height: 120px !important;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Buttons */
+        .edit-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-size: 16px;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .edit-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .logout-btn {
+            background-color: red;
+        }
+
+        .logout-btn:hover {
+            background-color: darkred;
+        }
+
+        /* Modal Styling */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .modal-content {
+            position: relative;
+            padding: 20px;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #333;
+            transition: color 0.2s;
+        }
+
+        .close:hover {
+            color: red;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Form Styling */
+        #editForm label {
+            font-weight: bold;
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        #editForm input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .save-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            width: 100%;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .save-btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Fade-in animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -55%);
+            }
+
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .user-card {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .profile-pic-container {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- This is the menu on the left side -->
+        <nav class="sidebar">
+            <h2>Menu</h2>
+            <ul>
+                <li><a href="dashboard">Dashboard</a></li>
+                <li><a href="dashboard">Book Event</a></li>
+                <li><a href="user-detail"> User Details</a></li>
+                <li><a href="dashboard">My Details</a></li>
+                <li><a href="dashboard">Bills</a></li>
+            </ul>
+        </nav>
+
+        <!-- This is the main area where content shows -->
+        <div class="main-content">
+
+
+            <div class="grid-container">
+                <h1>Profile</h1>
+                <div class="user-card">
+                    <div class="profile-pic-container">
+                        <img class="profile-pic" src="{{ url_for('static', filename='uploads/' + user[3]) }}"
+                            alt="Profile Picture">
+                    </div>
+                    <div>
+                        <p><strong>Name:</strong> {{ user[1] }}</p>
+                        <p><strong>Email:</strong> {{ user[2] }}</p>
+                        <p><strong>Address:</strong> {{ user[4] }}</p>
+                        <p><strong>Phone:</strong> {{ user[5] }}</p>
+
+                    </div>
+                </div>
+                <button onclick="openEditModal()" class="edit-btn">Edit Details</button>
+                <a href="{{ url_for('logout') }}"><button class="edit-btn">Logout</button></a>
+                <!-- <button onclick="openLogout()" class="logout-btn●●●●●●">Logout</button> -->
+            </div>
+
+
+            <!-- Edit User Modal -->
+            <div id="editModal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeEditModal()">&times;</span>
+                    <h2>Edit User Details</h2>
+                    <form id="editForm">
+                        <label for="editName">Name</label>
+                        <input type="text" id="editName" name="editName" value="{{ user[1] }}" required>
+                        <br><br>
+                        <label for="editEmail">Email</label>
+                        <input type="email" id="editEmail" name="editEmail" value="{{ user[2] }}" required>
+                        <br><br>
+                        <label for="editAddress">Address</label>
+                        <input type="Address" id="editAddress" name="editPhone" value="{{ user[4] }}" required>
+                        <label for="editPhone">Phone</label>
+                        <input type="Phone" id="editPhone" name="editPhone" value="{{ user[5] }}" required>
+
+
+
+                        <p id="message" style="color: red;"></p>
+
+                        <button type="submit" class="save-btn">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+
+            <script>
+                function openEditModal() {
+                    document.getElementById('editModal').style.display = 'block';
+                }
+
+                function closeEditModal() {
+                    document.getElementById('editModal').style.display = 'none';
+                }
+
+                document.addEventListener('DOMContentLoaded', function () {
+                    document.getElementById('editForm').addEventListener('submit', function (event) {
+                        event.preventDefault();
+
+                        let name = document.getElementById('editName').value.trim();
+                        let email = document.getElementById('editEmail').value.trim();
+                        let message = document.getElementById('message');
+
+                        if (!name || !email) {
+                            message.innerText = "Both fields are required!";
+                            return;
+                        }
+
+                        fetch('/update-user', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ name, email })
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    window.location.reload(); // Reload page to reflect changes
+                                } else {
+                                    message.innerText = data.error;
+                                }
+                            });
+                    });
+                });
+            </script>
+
+        </div>
+    </div>
+</body>
+
+</html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Details</title>
+</head>
+
+<body>
+
+</body>
+
+</html>
