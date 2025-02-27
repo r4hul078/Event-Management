@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Simple Dashboard</title>
+    <link rel="stylesheet" href="/static/CSS/dashboard.css">
+    <script src="/static/Javascript/dashboard.js"></script> <!-- Load JS at the end -->
+</head>
+<body>
+    <div class="container">
+        <!-- This is the menu on the left side -->
+        <nav class="sidebar">
+            <h2>Menu</h2>
+            <ul>
+                <li><a href="#" onclick="changePage('dashboard-section')">Dashboard</a></li>
+                <li><a href="#" onclick="changePage('booking-section')">Book Event</a></li>
+                <li><a href="#" onclick="changePage('user-details-section')">My Details</a></li>
+                <li><a href="#" onclick="changePage('bill-section')">Bills</a></li>
+            </ul>
+        </nav>
+
+        <!-- This is the main area where content shows -->
+        <div class="main-content">
+            <!-- Dashboard Page -->
+            <section id="dashboard-section" class="content-section" style="display: block;">
+                <h1>Dashboard</h1>
+                <div class="search-bar">
+                    <input type="text" id="event-search" placeholder="Search events...">
+                    <button onclick="searchEvents()">Search</button>
+                </div>
+                <p>Your events:</p>
+                <ul id="events-list">
+                    <!-- Events will appear here -->
+                </ul>
+            </section>
+
+            <!-- Book Event Page -->
+            <section id="booking-section" class="content-section" style="display: none;">
+                <h1>Book an Event</h1>
+                <form id="booking-form">
+                    <input type="text" placeholder="Event Name" id="event-name"><br>
+                    <input type="date" id="event-date"><br>
+                    <input type="text" placeholder="Venue" id="venue"><br>
+                    <textarea placeholder="Description" id="description"></textarea><br>
+                    <input type="text" placeholder="Address" id="address"><br>
+                    <input type="text" placeholder="Phone Number" id="phone-number"><br>
+                    <button type="submit">Book It!</button>
+                </form>
+            </section>
+
+            <!-- My Details Page -->
+            <section id="user-details-section" class="content-section" style="display: none;">
+                <h1>My Details</h1>
+                <ul id="user-details">
+                    <!-- User info will go here -->
+                </ul>
+                <button id="logout-btn">Logout</button>
+            </section>
+
+            <!-- Bills Page -->
+            <section id="bill-section" class="content-section" style="display: none;">
+                <h1>Bills</h1>
+                <ul id="bill-list">
+                    <!-- Bills will go here -->
+                </ul>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

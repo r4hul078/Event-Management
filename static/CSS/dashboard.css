@@ -1,0 +1,267 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: #e0e7ff; /* Simple solid color instead of gradient */
+    display: flex;
+    min-height: 100vh;
+}
+
+.container {
+    display: flex;
+    width: 100%;
+}
+
+.sidebar {
+    width: 220px;
+    height: 100%;
+    background: #1e3a8a; /* Solid color for simplicity */
+    color: white;
+    padding: 20px 10px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    box-shadow: 2px 0 5px gray;
+}
+
+.sidebar h2 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 10px 0;
+}
+
+.sidebar ul li a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.sidebar ul li a:hover {
+    background-color: #ffffff33; /* Light gray with transparency */
+}
+
+.main-content {
+    margin-left: 220px;
+    padding: 20px;
+    width: 100%; /* Fill remaining space */
+    background-color: white;
+    min-height: 100vh;
+}
+
+.content-section {
+    display: none;
+}
+
+.content-section.active {
+    display: block;
+}
+
+.content-section h1 {
+    font-size: 28px;
+    color: #1e3a8a;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #3b82f6;
+}
+
+.search-bar {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.search-bar input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.search-bar button {
+    padding: 10px 15px;
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+.search-bar button:hover {
+    background-color: #1e3a8a;
+}
+
+#events-list {
+    list-style: none;
+    padding: 0;
+}
+
+#events-list li {
+    background: #f9fafb;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-left: 5px solid #3b82f6;
+}
+
+#events-list li b {
+    color: #1e3a8a;
+    font-size: 18px;
+}
+
+#events-list li p {
+    margin: 5px 0;
+    color: #4b5563;
+}
+
+#booking-section form {
+    background: #f9fafb;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+#booking-section input,
+#booking-section textarea {
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#booking-section button {
+    padding: 10px;
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+#booking-section button:hover {
+    background-color: #1e3a8a;
+}
+
+#events-list li.paid {
+    border-left: 5px solid #22c55e;
+    background: #f0fdf4;
+}
+
+#events-list li.unpaid {
+    border-left: 5px solid #3b82f6;
+}
+
+#bill-list {
+    list-style: none;
+    padding: 0;
+}
+
+#bill-list li {
+    background: #f9fafb;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-left: 5px solid #3b82f6;
+}
+
+#bill-list li b {
+    color: #1e3a8a;
+    font-size: 18px;
+}
+
+#bill-list li p {
+    margin: 5px 0;
+    color: #4b5563;
+}
+
+#bill-list li.paid {
+    border-left: 5px solid #22c55e;
+    background: #f0fdf4;
+}
+
+#bill-list li.unpaid {
+    border-left: 5px solid #3b82f6;
+}
+
+#bill-list li button {
+    padding: 8px 15px;
+    background-color: #22c55e;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+#bill-list li button:hover {
+    background-color: #16a34a;
+}
+
+.receipt {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px gray;
+    max-width: 400px;
+}
+
+.receipt h2 {
+    color: #1e3a8a;
+    text-align: center;
+}
+
+.receipt p {
+    margin: 10px 0;
+    color: #4b5563;
+}
+
+.receipt button {
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+}
+
+.receipt button:first-child {
+    background-color: #22c55e;
+    color: white;
+}
+
+.receipt button:first-child:hover {
+    background-color: #16a34a;
+}
+
+.receipt button:last-child {
+    background-color: #ef4444;
+    color: white;
+}
+
+.receipt button:last-child:hover {
+    background-color: #dc2626;
+}
+
+#user-details-section button#logout-btn {
+    padding: 10px 20px;
+    background-color: #ef4444;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-top: 15px;
+}
+
+#user-details-section button#logout-btn:hover {
+    background-color: #dc2626;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100px;
+    }
+    .main-content {
+        margin-left: 100px;
+    }
+}
