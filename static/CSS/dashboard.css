@@ -15,7 +15,7 @@ body {
 .sidebar {
     width: 220px;
     height: 100%;
-    background: #1e3a8a; /* Solid color for simplicity */
+    background: #1e3a8a; 
     color: white;
     padding: 20px 10px;
     position: fixed;
@@ -48,13 +48,13 @@ body {
 }
 
 .sidebar ul li a:hover {
-    background-color: #ffffff33; /* Light gray with transparency */
+    background-color: #ffffff33; 
 }
 
 .main-content {
     margin-left: 220px;
     padding: 20px;
-    width: 100%; /* Fill remaining space */
+    width: 100%; 
     background-color: white;
     min-height: 100vh;
 }
@@ -195,6 +195,22 @@ body {
 
 #bill-list li button:hover {
     background-color: #16a34a;
+}
+
+
+#events-list li button,
+#bill-list li button.delete {
+    padding: 8px 15px;
+    background-color: #ef4444; 
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-left: 5px; 
+}
+
+#events-list li button:hover,
+#bill-list li button.delete:hover {
+    background-color: #dc2626;
 }
 
 .receipt {

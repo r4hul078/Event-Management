@@ -3,12 +3,10 @@ let events = [];
 
 // This function changes which page we see
 function changePage(sectionId) {
-    // Hide all pages
     let allPages = document.getElementsByClassName("content-section");
     for (let i = 0; i < allPages.length; i++) {
         allPages[i].style.display = "none";
     }
-    // Show the page we clicked
     document.getElementById(sectionId).style.display = "block";
 }
 
@@ -31,6 +29,13 @@ function showEvents(eventList) {
                             "Description: " + event.description + "<br>" +
                             "Phone: " + event.phone_number + "<br>" +
                             "Status: " + (event.paid ? "Paid" : "Not Paid");
+        let deleteButton = document.createElement("button");
+        deleteButton.innerText = "Delete";
+        deleteButton.setAttribute("data-event-id", event.id);
+        deleteButton.onclick = function() {
+            deleteEvent(event.id);
+        };
+        newItem.appendChild(deleteButton);
         eventListArea.appendChild(newItem);
     }
 }
@@ -59,24 +64,25 @@ function showBills(eventList) {
             let payButton = document.createElement("button");
             payButton.innerText = "Pay Now";
             payButton.setAttribute("data-event-id", event.id);
-            newItem.appendChild(payButton);
-        }
-        billListArea.appendChild(newItem);
-    }
-    // Add click action to Pay buttons
-    let buttons = document.getElementsByTagName("button");
-    for (let i = 0; i < buttons.length; i++) {
-        if (buttons[i].innerText === "Pay Now") {
-            buttons[i].onclick = function() {
+            payButton.onclick = function() {
                 let eventId = this.getAttribute("data-event-id");
                 let event = events.find(e => e.id == eventId);
                 showReceipt(event);
             };
+            newItem.appendChild(payButton);
         }
+        let deleteButton = document.createElement("button");
+        deleteButton.innerText = "Delete";
+        deleteButton.setAttribute("data-event-id", event.id);
+        deleteButton.onclick = function() {
+            deleteEvent(event.id);
+        };
+        newItem.appendChild(deleteButton);
+        billListArea.appendChild(newItem);
     }
 }
 
-// This function shows a popup for payment
+// Popup for confirmation
 function showReceipt(event) {
     let popup = document.createElement("div");
     popup.className = "receipt";
@@ -93,7 +99,6 @@ function showReceipt(event) {
                       "<button id='cancel-pay'>Cancel</button>";
     document.body.appendChild(popup);
 
-    // Add actions to the buttons in the popup
     document.getElementById("confirm-pay").onclick = function() {
         confirmPayment(event.id);
     };
@@ -102,20 +107,19 @@ function showReceipt(event) {
     };
 }
 
-// This function confirms a payment
+// A window for payment confirmation
 function confirmPayment(eventId) {
-    // Send a request to the server to mark payment as done
     let request = new XMLHttpRequest();
     request.open("POST", "/pay/" + eventId);
     request.setRequestHeader("Content-Type", "application/json");
     request.onreadystatechange = function() {
-        if (request.readyState === 4) { // Request is complete
+        if (request.readyState === 4) {
             let response = JSON.parse(request.responseText);
             if (response.success) {
                 let popup = document.querySelector(".receipt");
                 if (popup) popup.remove();
                 alert("Payment done!");
-                loadEvents(); // Refresh the lists
+                loadEvents();
             } else {
                 alert("Payment failed!");
             }
@@ -124,25 +128,49 @@ function confirmPayment(eventId) {
     request.send();
 }
 
-// This function gets events from the server
+// Delete the function
+function deleteEvent(eventId) {
+    if (!confirm("Are you sure you want to delete this event?")) return;
+    let request = new XMLHttpRequest();
+    request.open("DELETE", "/events/" + eventId);
+    request.setRequestHeader("Content-Type", "application/json");
+    request.onreadystatechange = function() {
+        if (request.readyState === 4) {
+            if (request.status === 200) {
+                let response = JSON.parse(request.responseText);
+                if (response.success) {
+                    alert("Event deleted!");
+                    loadEvents(); // Refresh the lists
+                } else {
+                    alert("Deletion failed: " + response.error);
+                }
+            } else {
+                alert("Error deleting event!");
+            }
+        }
+    };
+    request.send();
+}
+
+// Fetch the events from server
 function loadEvents() {
     let request = new XMLHttpRequest();
     request.open("GET", "/events");
     request.onreadystatechange = function() {
-        if (request.readyState === 4 && request.status === 200) { // Success
+        if (request.readyState === 4 && request.status === 200) {
             let data = JSON.parse(request.responseText);
-            console.log("Events:", data); // See what we got
+            console.log("Events:", data);
             events = data.events || [];
             showEvents(events);
             showBills(events);
-        } else if (request.readyState === 4) { // Error
+        } else if (request.readyState === 4) {
             console.log("Error loading events:", request.status);
         }
     };
     request.send();
 }
 
-// This function searches for events
+// Searching event
 function searchEvents() {
     let searchText = document.getElementById("event-search").value.toLowerCase();
     let foundEvents = [];
@@ -157,53 +185,34 @@ function searchEvents() {
     showBills(foundEvents);
 }
 
-// This function gets user details
-// function loadUserDetails() {
-//     let request = new XMLHttpRequest();
-//     request.open("GET", "/user-details");
-//     request.onreadystatechange = function() {
-//         if (request.readyState === 4 && request.status === 200) { // Success
-//             let data = JSON.parse(request.responseText);
-//             console.log("User:", data); // See what we got
-//             let userArea = document.getElementById("user-details");
-//             userArea.innerHTML = "<li>Email: " + data.email + "</li>";
-//         } else if (request.readyState === 4) { // Error
-//             console.log("Error loading user details:", request.status);
-//         }
-//     };
-//     request.send();
-// }
-
-// This function logs the user out
+// Logout
 function logout() {
     let request = new XMLHttpRequest();
     request.open("POST", "/logout");
     request.setRequestHeader("Content-Type", "application/json");
     request.onreadystatechange = function() {
-        if (request.readyState === 4 && request.status === 200) { // Success
+        if (request.readyState === 4 && request.status === 200) {
             let data = JSON.parse(request.responseText);
             if (data.success) {
                 window.location.href = data.redirect;
             } else {
                 alert("Logout failed!");
             }
-        } else if (request.readyState === 4) { // Error
+        } else if (request.readyState === 4) {
             console.log("Error logging out:", request.status);
         }
     };
     request.send();
 }
 
-// When the page is ready
+// After the page loads
 window.onload = function() {
-    console.log("Page is ready!"); // Let us know it started
+    console.log("Page is ready!");
     loadEvents();
-    // loadUserDetails();
 
-    // Handle the booking form
     let form = document.getElementById("booking-form");
     form.onsubmit = function(event) {
-        event.preventDefault(); // Stop the form from reloading the page
+        event.preventDefault();
         let eventName = document.getElementById("event-name").value;
         let eventDate = document.getElementById("event-date").value;
         let venue = document.getElementById("venue").value;
@@ -220,16 +229,16 @@ window.onload = function() {
         request.open("POST", "/events");
         request.setRequestHeader("Content-Type", "application/json");
         request.onreadystatechange = function() {
-            if (request.readyState === 4 && request.status === 200) { // Success
+            if (request.readyState === 4 && request.status === 200) {
                 let data = JSON.parse(request.responseText);
                 if (data.success) {
                     alert("Event booked!");
-                    form.reset(); // Clear the form
-                    loadEvents(); // Update the lists
+                    form.reset();
+                    loadEvents();
                 } else {
                     alert("Booking failed!");
                 }
-            } else if (request.readyState === 4) { // Error
+            } else if (request.readyState === 4) {
                 console.log("Error booking:", request.status);
             }
         };
@@ -244,10 +253,12 @@ window.onload = function() {
         request.send(JSON.stringify(dataToSend));
     };
 
-    // Handle logout button
-    document.getElementById("logout-btn").onclick = logout;
+    // Move logout button initialization here
+    let logoutBtn = document.getElementById("logout-btn");
+    if (logoutBtn) {
+        logoutBtn.onclick = logout;
+    }
 
-    // Search when pressing Enter
     document.getElementById("event-search").onkeypress = function(e) {
         if (e.key === "Enter") {
             searchEvents();

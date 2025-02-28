@@ -3,25 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Simple Dashboard</title>
+    <title>Event Management System</title>
     <link rel="stylesheet" href="/static/CSS/dashboard.css">
     <script src="/static/Javascript/dashboard.js"></script> <!-- Load JS at the end -->
 </head>
 <body>
     <div class="container">
-        <!-- This is the menu on the left side -->
         <nav class="sidebar">
             <h2>Menu</h2>
             <ul>
                 <li><a href="#" onclick="changePage('dashboard-section')">Dashboard</a></li>
                 <li><a href="#" onclick="changePage('booking-section')">Book Event</a></li>
-                <li><a href="user-detail"> User Details</a></li>
-                <li><a href="#" onclick="changePage('user-details-section')">My Details</a></li>
+                <li><a href="user-detail">User Details</a></li>
                 <li><a href="#" onclick="changePage('bill-section')">Bills</a></li>
             </ul>
         </nav>
 
-        <!-- This is the main area where content shows -->
         <div class="main-content">
             <!-- Dashboard Page -->
             <section id="dashboard-section" class="content-section" style="display: block;">
@@ -31,9 +28,7 @@
                     <button onclick="searchEvents()">Search</button>
                 </div>
                 <p>Your events:</p>
-                <ul id="events-list">
-                
-                </ul>
+                <ul id="events-list"></ul>
             </section>
 
             <!-- Book Event Page -->
@@ -50,21 +45,10 @@
                 </form>
             </section>
 
-            <!-- My Details Page -->
-            <section id="user-details-section" class="content-section" style="display: none;">
-                <h1>My Details</h1>
-                <ul id="user-details">
-                
-                </ul>
-                <button id="logout-btn">Logout</button>
-            </section>
-
             <!-- Bills Page -->
             <section id="bill-section" class="content-section" style="display: none;">
                 <h1>Bills</h1>
-                <ul id="bill-list">
-                
-                </ul>
+                <ul id="bill-list"></ul>
             </section>
         </div>
     </div>
